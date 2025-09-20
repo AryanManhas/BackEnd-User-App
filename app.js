@@ -47,6 +47,13 @@ app.post("/register" , async(req , res)=>{
 
 
 
+//     let token = jwt.sign({email : email , userid : newUser._id} , "shhhh");
+//     res.cookie("token" , token);
+//     res.send("registered")
+// })
+
+
+
 // app.post("/register", async (req, res) => {
 //   try {
 //     let { email, password, username, name, age } = req.body;
