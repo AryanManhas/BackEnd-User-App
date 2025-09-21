@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken")
 
 const postModel = require("./models/post")
 
-const usertModel = require("./models/user");
+const userModel = require("./models/user");
 
 const cookieParser = require("cookie-parser");
 
@@ -19,6 +19,15 @@ app.use(cookieParser())
 
 app.get("/" , (req , res)=>{
     res.render("index")
+})
+
+app.get("/login" , (req , res)=>{
+    res.render("login")
+})
+
+app.get("/logout" , (req , res)=>{
+    res.cookie("token" , "")
+    res.redirect("/login")
 })
 
 
@@ -45,6 +54,16 @@ app.post("/register" , async(req , res)=>{
     res.send("registered")
 })
 
+app.post("/login" , async(req , res)=>{
+    let {email , password} = req.body
+    let user = await userModel.findOne({email})
+    if (!user) return res.status(500).send("Something Went Wrong!")
+
+        bcrypt.compare(password , user.password , (err , result)=>{
+            if(result) res.status(200).send("Logged In")
+                else(res.redirect("/Login"))
+        })
+})
 
 
 //     let token = jwt.sign({email : email , userid : newUser._id} , "shhhh");
