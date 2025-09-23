@@ -192,7 +192,18 @@ function isLoggedIn(req, res, next) {
   }
 }
 
+function isLoggedOut(req, res, next) {
+  const token = req.cookies.token;
+  if (!token) return res.send("You must be Logged In");
 
+  try {
+    let data = jwt.verify(token, "shhhh");
+    req.user = data;
+    next();
+  } catch (err) {
+    return res.send("Invalid Token");
+  }
+}
 
 
 
